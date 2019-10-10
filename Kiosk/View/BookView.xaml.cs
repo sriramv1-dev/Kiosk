@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kiosk.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,11 @@ namespace Kiosk.View
         public BookView()
         {
             InitializeComponent();
+        }
+
+        private async void Search_Click(object sender, RoutedEventArgs e)
+        {
+            await Task.Run(() =>  VM.GetBooks2(""));
         }
     }
 }

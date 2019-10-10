@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kiosk.ViewModel"
         mc:Ignorable="d"
-        Title="BookView" Height="450" Width="800">
+        SizeToContent="Manual"
+        Title="BookView" Height="750" Width="800">
     <Window.DataContext>
-        <local:BookViewModel x:Name="BookVM" />
+        <local:BookViewModel x:Name="VM" />
     </Window.DataContext>
-    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center"> 
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -18,33 +19,54 @@
                 <ColumnDefinition Width="0.75*"/>
                 <ColumnDefinition Width="0.25*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0"></TextBox>
-            <Button Grid.Column="1" Content="Search" /> 
+            <TextBox Grid.Column="0" x:Name="searchTextBox" Text="{Binding SearchText}"  />
+            <!--<Button Grid.Column="1" Content="Search" Command="{Binding Path=SearchBooksCommand}"/>-->
+            <Button Grid.Column="1" Content="Search" Click="Search_Click"/>
         </Grid>
-        <!--<ListView x:Name="listViewBooks" ItemsSource="{Binding BookList}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn 
-                        Header="Title" 
-                        DisplayMemberBinding="{Binding Title}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>-->
-        <ListBox ItemsSource="{Binding BookList}" HorizontalContentAlignment="Stretch">
+
+        <Grid HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+
+            <RadioButton Grid.Column="0" GroupName="groupFoo" IsChecked="{Binding SearchByTitle}">Search By Title</RadioButton>
+            <RadioButton Grid.Column="1" GroupName="groupFoo" IsChecked="{Binding SearchByAuthor}">Search By Author</RadioButton>
+        </Grid>
+
+
+        <ListBox VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="listBoxBooks" ItemsSource="{Binding BookList}" 
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" Height="200"
+                     ScrollViewer.CanContentScroll="False" Visibility="{Binding BooksListVisible}" MinHeight="100"
+                 >
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Margin" Value="2"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid > 
+                    <Grid Background="AliceBlue">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.15*"/>
-                            <ColumnDefinition Width="0.75*"/>
-                            <ColumnDefinition Width="0.1*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding Title}"  />
-                        <TextBlock Grid.Column="1" Text="{Binding Description}" />
-                        <TextBlock Grid.Column="2" Text="{Binding PageCount}" />
+                        <Image Grid.Column="0" Width="64" Height="64" Stretch="Fill"   Source ="{Binding Thumbnail}" />
+                        <GridSplitter Grid.Column="1"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Title}" HorizontalAlignment="Stretch" TextWrapping="Wrap"  />
+                        <GridSplitter Grid.Column="3"/>
+                        <TextBlock Grid.Column="4" Text="{Binding Author}"  HorizontalAlignment="Stretch" TextWrapping="Wrap" />
                     </Grid>
+
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
     </StackPanel>
 </Window>

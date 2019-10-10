@@ -6,6 +6,11 @@ using Kiosk.Model;
 using Google.Apis.Books.v1;
 using Google.Apis.Books.v1.Data;
 using Google.Apis.Services;
+using System.Net.Http;
+using Newtonsoft.Json;
+
+using System.Net;
+using System.Net.Http.Headers;
 
 
 namespace Kiosk.Api
@@ -21,15 +26,16 @@ namespace Kiosk.Api
             ApplicationName = APP_NAME
         });
 
-        public static async Task<Volume> SearchBooks(string searchString)
+        public static async Task<List<Volume>> SearchBooks(string searchString)
         {
             Console.WriteLine("Executing a book search request for ISBN: {0} ...", searchString);
             var result = await bookService.Volumes.List(searchString).ExecuteAsync();
 
             if (result != null && result.Items != null)
             {
-                var item = result.Items.FirstOrDefault();
-                return item;
+                //var item = result.Items.FirstOrDefault();
+                //return item;
+                return result.Items.ToList();
             }
             return null;
 
@@ -69,6 +75,98 @@ namespace Kiosk.Api
                 PageCount = b.VolumeInfo.PageCount,
             }).ToList();
             return new Tuple<int?, List<Book>>(res.TotalItems, books);
+        }
+
+        public static async  Task<List<Book>> SearchWithUrl()
+        {
+            ResVal resVal = new ResVal();
+            HttpClient client = new HttpClient();
+            var queryUrl = bookService.BaseUri + "volumes?q=author:jack";
+            HttpResponseMessage response = await client.GetAsync(queryUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                var pReturn = JsonConvert.DeserializeObject<ResVal>(result);
+                if(pReturn == null)
+                {
+
+                }
+                else
+                {
+                    var books = pReturn.items.Select(b => new Book
+                    {
+                        Id = b.Id,
+                        Title = b.VolumeInfo.Title,
+                        Author = ((b.VolumeInfo.Authors != null) && (b.VolumeInfo.Authors.ToArray().Length > 0)) ? string.Join(",", b.VolumeInfo.Authors.ToArray()) : "",
+                        Thumbnail = b.VolumeInfo.ImageLinks.SmallThumbnail,
+                        Subtitle = b.VolumeInfo.Subtitle,
+                        Description = b.VolumeInfo.Description,
+                        PageCount = b.VolumeInfo.PageCount,
+                    }).ToList();
+                    return books;
+                }
+            }
+            return new List<Book>();
+
+        }
+
+        public static List<Book> Search(string query)
+        {
+            if( string.IsNullOrEmpty(query) || query.Trim() == "")
+            {
+                return new List<Book>();
+            }
+
+            // https://www.googleapis.com/books/v1/volumes?q=author:jack
+
+            
+            var listquery = bookService.Volumes.List(query);
+            listquery.MaxResults = 40;
+            listquery.StartIndex = 0;
+            
+            var res = listquery.Execute();
+            
+            try
+            {
+                var books = res.Items.Select(b => new Book
+                {
+                    Id = b.Id,
+                    Title = b.VolumeInfo.Title,
+                    Author = ((b.VolumeInfo.Authors != null) && ( b.VolumeInfo.Authors.ToArray().Length > 0 ) )? string.Join(",", b.VolumeInfo.Authors.ToArray()) : "",
+                    Thumbnail = b.VolumeInfo.ImageLinks.SmallThumbnail,
+                    Subtitle = b.VolumeInfo.Subtitle,
+                    Description = b.VolumeInfo.Description,
+                    PageCount = b.VolumeInfo.PageCount,
+                }).ToList();
+                return books;
+            }
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+               return new List<Book>();
+            }
+            
+            
+        }
+
+        public static List<Book> SearchByAuthor(string query)
+        {
+
+            var listquery = bookService.Volumes.List(query);  //can get fields
+
+            var res = listquery.Execute();
+            var books = res.Items.Select(b => new Book
+            {
+                Id = b.Id,
+                Title = b.VolumeInfo.Title,
+                Author = string.Join(",", b.VolumeInfo.Authors.ToArray()),
+                Thumbnail = b.VolumeInfo.ImageLinks.SmallThumbnail,
+
+                Subtitle = b.VolumeInfo.Subtitle,
+                Description = b.VolumeInfo.Description,
+                PageCount = b.VolumeInfo.PageCount,
+            }).ToList();
+            return books;
         }
     }
 

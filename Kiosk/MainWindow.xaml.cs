@@ -28,9 +28,17 @@ namespace Kiosk
 
         private void SearchForBooks_Clicked(object sender, RoutedEventArgs e)
         {
-            Hide();
-            BookView bookView = new BookView();
-            bookView.Show();
+            try
+            {
+                Hide();
+                BookView bookView = new BookView();
+                bookView.Show();
+            }
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+            }
+
         }
     }
 }

@@ -77,7 +77,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Api\BooksApi.cs" />
+    <Compile Include="Model\BookVolume.cs" />
+    <Compile Include="Model\ResVal.cs" />
     <Compile Include="MVVMBase\RelayCommand.cs" />
+    <Compile Include="MVVMBase\ViewModelBase.cs" />
     <Compile Include="ViewModel\BookViewModel.cs" />
     <Compile Include="View\BookView.xaml.cs">
       <DependentUpon>BookView.xaml</DependentUpon>
@@ -127,6 +130,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Api\test1.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
