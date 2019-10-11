@@ -10,7 +10,7 @@
     <Window.DataContext>
         <local:BookViewModel x:Name="VM" />
     </Window.DataContext>
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+    <StackPanel Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -20,8 +20,6 @@
                 <ColumnDefinition Width="0.25*"/>
             </Grid.ColumnDefinitions>
             <TextBox Grid.Column="0" x:Name="searchTextBox" Text="{Binding SearchText}"  />
-            <!--<Button Grid.Column="1" Content="Search" Command="{Binding Path=SearchBooksCommand}"/>-->
-            <!--<Button Grid.Column="1" Content="Search" Click="Search_Click"/>-->
             <Button Grid.Column="1" Content="Search" Command="{Binding Path=SearchBooksCommand}"/>
         </Grid>
 
@@ -34,12 +32,49 @@
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
 
-            <RadioButton Grid.Column="0" GroupName="groupFoo" IsChecked="{Binding SearchByTitle}">Search By Title</RadioButton>
-            <RadioButton Grid.Column="1" GroupName="groupFoo" IsChecked="{Binding SearchByAuthor}">Search By Author</RadioButton>
+            <RadioButton Grid.Column="0" GroupName="seachGroup" IsChecked="{Binding SearchByTitle}">Search By Title</RadioButton>
+            <RadioButton Grid.Column="1" GroupName="seachGroup" IsChecked="{Binding SearchByAuthor}">Search By Author</RadioButton>
         </Grid>
 
+        <DataGrid ItemsSource="{Binding BookList}" 
+                  AutoGenerateColumns="False" 
+                  ScrollViewer.CanContentScroll="False" 
+                  ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                  GridLinesVisibility="All"
+                  BorderThickness="1"
+                  Height="400">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Image" Width="SizeToCells" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Image Source="{Binding Thumbnail}"  Width="64" Height="64" Stretch="Fill" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Title and Sub title" Width="SizeToCells" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="{Binding Title}" HorizontalAlignment="Stretch" TextWrapping="Wrap"  />
+                                <TextBlock Grid.Row="1" Text="{Binding Subtitle}" HorizontalAlignment="Stretch" TextWrapping="Wrap"  />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
 
-        <ListBox VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="listBoxBooks" ItemsSource="{Binding BookList}" 
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Author" Binding="{Binding Author}"/>
+                <DataGridTextColumn Header="Published Year" Binding="{Binding PublishedYear}"/>
+                <DataGridTextColumn Header="Publisher" Binding="{Binding Publisher}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!--<ListBox VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="listBoxBooks" ItemsSource="{Binding BookList}" 
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Height="200"
                      ScrollViewer.CanContentScroll="False" Visibility="{Binding BooksListVisible}" MinHeight="100"
                  >
@@ -67,7 +102,7 @@
 
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
+        </ListBox>-->
 
     </StackPanel>
 </Window>

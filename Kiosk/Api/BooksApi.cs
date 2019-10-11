@@ -81,7 +81,7 @@ namespace Kiosk.Api
         {
             ResVal resVal = new ResVal();
             HttpClient client = new HttpClient();
-            var queryUrl = bookService.BaseUri + "volumes?q=author:" + searchString;
+            var queryUrl = bookService.BaseUri + "volumes?q=author:" + searchString + "&maxResults=40";
             HttpResponseMessage response = await client.GetAsync(queryUrl);
             if (response.IsSuccessStatusCode)
             {
@@ -99,8 +99,10 @@ namespace Kiosk.Api
                         Title = b.VolumeInfo.Title,
                         Author = ((b.VolumeInfo.Authors != null) && (b.VolumeInfo.Authors.ToArray().Length > 0)) ? string.Join(",", b.VolumeInfo.Authors.ToArray()) : "",
                         Thumbnail = ((b.VolumeInfo.ImageLinks != null) && (b.VolumeInfo.ImageLinks.SmallThumbnail != null)) ? b.VolumeInfo.ImageLinks.SmallThumbnail : "",
-                        Subtitle = b.VolumeInfo.Subtitle,
-                        Description = b.VolumeInfo.Description,
+                        Subtitle = b.VolumeInfo.Subtitle ?? " ",
+                        PublishedYear = b.VolumeInfo.PublishedDate ?? "Not Available",
+                        Publisher = b.VolumeInfo.Publisher ?? "Not Available",
+                        Description = b.VolumeInfo.Description ?? "Not Available",
                         PageCount = b.VolumeInfo.PageCount,
                     }).ToList();
                     return books;
@@ -114,7 +116,7 @@ namespace Kiosk.Api
         {
             ResVal resVal = new ResVal();
             HttpClient client = new HttpClient();
-            var queryUrl = bookService.BaseUri + "volumes?q=title:" + searchString;
+            var queryUrl = bookService.BaseUri + "volumes?q=title:" + searchString + "&maxResults=40"; ;
             HttpResponseMessage response = await client.GetAsync(queryUrl);
             if (response.IsSuccessStatusCode)
             {
@@ -132,8 +134,10 @@ namespace Kiosk.Api
                         Title = b.VolumeInfo.Title,
                         Author = ((b.VolumeInfo.Authors != null) && (b.VolumeInfo.Authors.ToArray().Length > 0)) ? string.Join(",", b.VolumeInfo.Authors.ToArray()) : "",
                         Thumbnail = ((b.VolumeInfo.ImageLinks != null) && (b.VolumeInfo.ImageLinks.SmallThumbnail != null)) ? b.VolumeInfo.ImageLinks.SmallThumbnail : "",
-                        Subtitle = b.VolumeInfo.Subtitle,
-                        Description = b.VolumeInfo.Description,
+                        Subtitle = b.VolumeInfo.Subtitle ?? " ",
+                        PublishedYear = b.VolumeInfo.PublishedDate ?? "Not Available",
+                        Publisher = b.VolumeInfo.Publisher ?? "Not Available",
+                        Description = b.VolumeInfo.Description??"Not Available",
                         PageCount = b.VolumeInfo.PageCount,
                     }).ToList();
                     return books;
