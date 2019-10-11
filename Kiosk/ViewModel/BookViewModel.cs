@@ -16,10 +16,9 @@ namespace Kiosk.ViewModel
 
         public BookViewModel()
         {
-            //SearchBooksCommand = new RelayCommand<string>(GetBooks);
-            SearchBooksCommand2 = new RelayCommand<string>(GetBooks2);
             SearchByTitle = true;
         }
+
 
         private ICommand _SearchBooksCommand { get; set; }
         public ICommand SearchBooksCommand
@@ -31,19 +30,6 @@ namespace Kiosk.ViewModel
                     _SearchBooksCommand = new RelayCommand<string>(GetBooks);
                 }
                 return _SearchBooksCommand;
-            }
-        }
-
-        private ICommand _SearchBooksCommand2 { get; set; }
-        public ICommand SearchBooksCommand2
-        {
-            get
-            {
-                if (_SearchBooksCommand2 == null)
-                {
-                    _SearchBooksCommand2 = new RelayCommand<string>(GetBooks2);
-                }
-                return _SearchBooksCommand2;
             }
         }
 
@@ -126,13 +112,13 @@ namespace Kiosk.ViewModel
             }
         }
 
-        public void GetBooks(string SearchString)
-        {
-            var retVal = BooksApi.Search(this.SearchText);
-            BookList = new ObservableCollection<Book>(retVal);
-        }
+        //public void GetBooks(string SearchString)
+        //{
+        //    var retVal = BooksApi.Search(this.SearchText);
+        //    BookList = new ObservableCollection<Book>(retVal);
+        //}
 
-        public async void GetBooks2(string SearchString)
+        public async void GetBooks(string SearchString)
         {
             List<Book> result = new List<Book>();
             if( SearchByTitle)

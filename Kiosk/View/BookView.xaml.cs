@@ -24,10 +24,5 @@ namespace Kiosk.View
         {
             InitializeComponent();
         }
-
-        private async void Search_Click(object sender, RoutedEventArgs e)
-        {
-            await Task.Run(() =>  VM.GetBooks2(""));
-        }
     }
 }
