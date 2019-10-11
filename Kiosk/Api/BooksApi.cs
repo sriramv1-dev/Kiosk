@@ -77,11 +77,11 @@ namespace Kiosk.Api
             return new Tuple<int?, List<Book>>(res.TotalItems, books);
         }
 
-        public static async  Task<List<Book>> SearchWithUrl()
+        public static async  Task<List<Book>> SearchByAuthor(string searchString)
         {
             ResVal resVal = new ResVal();
             HttpClient client = new HttpClient();
-            var queryUrl = bookService.BaseUri + "volumes?q=author:jack";
+            var queryUrl = bookService.BaseUri + "volumes?q=author:" + searchString;
             HttpResponseMessage response = await client.GetAsync(queryUrl);
             if (response.IsSuccessStatusCode)
             {
@@ -98,7 +98,40 @@ namespace Kiosk.Api
                         Id = b.Id,
                         Title = b.VolumeInfo.Title,
                         Author = ((b.VolumeInfo.Authors != null) && (b.VolumeInfo.Authors.ToArray().Length > 0)) ? string.Join(",", b.VolumeInfo.Authors.ToArray()) : "",
-                        Thumbnail = b.VolumeInfo.ImageLinks.SmallThumbnail,
+                        Thumbnail = ((b.VolumeInfo.ImageLinks != null) && (b.VolumeInfo.ImageLinks.SmallThumbnail != null)) ? b.VolumeInfo.ImageLinks.SmallThumbnail : "",
+                        Subtitle = b.VolumeInfo.Subtitle,
+                        Description = b.VolumeInfo.Description,
+                        PageCount = b.VolumeInfo.PageCount,
+                    }).ToList();
+                    return books;
+                }
+            }
+            return new List<Book>();
+
+        }
+
+        public static async Task<List<Book>> SearchByTitle(string searchString)
+        {
+            ResVal resVal = new ResVal();
+            HttpClient client = new HttpClient();
+            var queryUrl = bookService.BaseUri + "volumes?q=title:" + searchString;
+            HttpResponseMessage response = await client.GetAsync(queryUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+                var pReturn = JsonConvert.DeserializeObject<ResVal>(result);
+                if (pReturn == null)
+                {
+
+                }
+                else
+                {
+                    var books = pReturn.items.Select(b => new Book
+                    {
+                        Id = b.Id,
+                        Title = b.VolumeInfo.Title,
+                        Author = ((b.VolumeInfo.Authors != null) && (b.VolumeInfo.Authors.ToArray().Length > 0)) ? string.Join(",", b.VolumeInfo.Authors.ToArray()) : "",
+                        Thumbnail = ((b.VolumeInfo.ImageLinks != null) && (b.VolumeInfo.ImageLinks.SmallThumbnail != null)) ? b.VolumeInfo.ImageLinks.SmallThumbnail : "",
                         Subtitle = b.VolumeInfo.Subtitle,
                         Description = b.VolumeInfo.Description,
                         PageCount = b.VolumeInfo.PageCount,
@@ -144,30 +177,26 @@ namespace Kiosk.Api
             {
                 var msg = ex.Message;
                return new List<Book>();
-            }
-            
-            
+            }            
         }
 
-        public static List<Book> SearchByAuthor(string query)
-        {
+        //public static List<Book> SearchByAuthor(string query)
+        //{
+        //    var listquery = bookService.Volumes.List(query);  //can get field
+        //    var res = listquery.Execute();
+        //    var books = res.Items.Select(b => new Book
+        //    {
+        //        Id = b.Id,
+        //        Title = b.VolumeInfo.Title,
+        //        Author = string.Join(",", b.VolumeInfo.Authors.ToArray()),
+        //        Thumbnail = b.VolumeInfo.ImageLinks.SmallThumbnail,
 
-            var listquery = bookService.Volumes.List(query);  //can get fields
-
-            var res = listquery.Execute();
-            var books = res.Items.Select(b => new Book
-            {
-                Id = b.Id,
-                Title = b.VolumeInfo.Title,
-                Author = string.Join(",", b.VolumeInfo.Authors.ToArray()),
-                Thumbnail = b.VolumeInfo.ImageLinks.SmallThumbnail,
-
-                Subtitle = b.VolumeInfo.Subtitle,
-                Description = b.VolumeInfo.Description,
-                PageCount = b.VolumeInfo.PageCount,
-            }).ToList();
-            return books;
-        }
+        //        Subtitle = b.VolumeInfo.Subtitle,
+        //        Description = b.VolumeInfo.Description,
+        //        PageCount = b.VolumeInfo.PageCount,
+        //    }).ToList();
+        //    return books;
+        //}
     }
 
 }

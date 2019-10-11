@@ -17,6 +17,8 @@ namespace Kiosk.ViewModel
         public BookViewModel()
         {
             //SearchBooksCommand = new RelayCommand<string>(GetBooks);
+            SearchBooksCommand2 = new RelayCommand<string>(GetBooks2);
+            SearchByTitle = true;
         }
 
         private ICommand _SearchBooksCommand { get; set; }
@@ -29,6 +31,19 @@ namespace Kiosk.ViewModel
                     _SearchBooksCommand = new RelayCommand<string>(GetBooks);
                 }
                 return _SearchBooksCommand;
+            }
+        }
+
+        private ICommand _SearchBooksCommand2 { get; set; }
+        public ICommand SearchBooksCommand2
+        {
+            get
+            {
+                if (_SearchBooksCommand2 == null)
+                {
+                    _SearchBooksCommand2 = new RelayCommand<string>(GetBooks2);
+                }
+                return _SearchBooksCommand2;
             }
         }
 
@@ -60,8 +75,8 @@ namespace Kiosk.ViewModel
             }
         }
     
-        private string _BooksListVisible;
-        public string BooksListVisible
+        private bool _BooksListVisible;
+        public bool BooksListVisible
         {
             get { return _BooksListVisible; }
             set
@@ -70,11 +85,11 @@ namespace Kiosk.ViewModel
                 {
                     if(BookList.ToList().Count > 0)
                     {
-                        value = "Visible";
+                        value = true;
                     }
                     else
                     {
-                        value = "Hidden";
+                        value = false;
                     }
                     _BooksListVisible = value;
                     this.OnPropertyChanged("BooksListVisible");
@@ -96,25 +111,40 @@ namespace Kiosk.ViewModel
             }
         }
 
+        // SearchByAuthor
+        private bool _SearchByAuthor;
+        public bool SearchByAuthor
+        {
+            get { return _SearchByAuthor; }
+            set
+            {
+                if (value != _SearchByAuthor)
+                {
+                    _SearchByAuthor = value;
+                    this.OnPropertyChanged("SearchByAuthor");
+                }
+            }
+        }
+
         public void GetBooks(string SearchString)
         {
-            //var retVal = SearchByTitle ? BooksApi.Search(SearchString) : BooksApi.SearchByAuthor(SearchString);
-            //var retVal = BooksApi.Search( SearchString);
-            //
             var retVal = BooksApi.Search(this.SearchText);
             BookList = new ObservableCollection<Book>(retVal);
-            //BooksApi.SearchWithUrl();
         }
 
         public async void GetBooks2(string SearchString)
         {
-
-            var result = await BooksApi.SearchWithUrl();
+            List<Book> result = new List<Book>();
+            if( SearchByTitle)
+            {
+                 result = await BooksApi.SearchByTitle(this.SearchText);               
+            }
+            if(SearchByAuthor)
+            {
+                 result = await BooksApi.SearchByAuthor(this.SearchText);
+                
+            }
             BookList = new ObservableCollection<Book>(result);
-
-            //await Task.Run(() => 
-            //     BooksApi.SearchWithUrl() 
-            //);
         }
 
     }
