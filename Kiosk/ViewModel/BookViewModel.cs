@@ -191,7 +191,10 @@ namespace Kiosk.ViewModel
                 case 0:
                     ErrorMessage = "";
                     string searchByType = SearchByTitle ? "title" : SearchByAuthor ? "author" : "title";
-                    result = await BooksApi.Search(this.SearchText, searchByType);                    
+                    //result = await BooksApi.Search(this.SearchText, searchByType);       
+                    var retVal = await BooksApi.Search(this.SearchText, searchByType);
+                    result = retVal.Item1;
+                    ErrorMessage = retVal.Item2;
                     break;
                 case 1:
                     ErrorMessage = "Search text should not be empty";

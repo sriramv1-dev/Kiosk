@@ -26,45 +26,107 @@ namespace Kiosk.Api
             ApplicationName = APP_NAME
         });
 
-        public static async Task<List<Book>> Search(string searchString, string searchByType)
+
+        public static async Task<Tuple<List<Book>, string>> Search(string searchString, string searchByType)
         {
             HttpClient client = new HttpClient();
+            string errorMessage = "";
             int maxResults = 40;
             var queryUrl = bookService.BaseUri +
-                "volumes?q=" + 
-                searchByType + ":" + 
-                searchString + 
-                "&maxResults=" + 
-                maxResults.ToString(); 
-            HttpResponseMessage response = await client.GetAsync(queryUrl);
-            if (response.IsSuccessStatusCode)
+                "volumes?q=" +
+                searchByType + ":" +
+                searchString +
+                "&maxResults=" +
+                maxResults.ToString();
+            try
             {
-                var result = await response.Content.ReadAsStringAsync();
-                var pReturn = JsonConvert.DeserializeObject<ResVal>(result);
-                if (pReturn == null)
+                HttpResponseMessage response = await client.GetAsync(queryUrl);
+                if (response.IsSuccessStatusCode)
                 {
-
-                }
-                else
-                {
-                    var books = pReturn.items.Select(b => new Book
+                    var result = await response.Content.ReadAsStringAsync();
+                    var pReturn = JsonConvert.DeserializeObject<ResVal>(result);
+                    if (pReturn == null)
                     {
-                        Id = b.Id,
-                        Title = b.VolumeInfo.Title,
-                        Author = ((b.VolumeInfo.Authors != null) && (b.VolumeInfo.Authors.ToArray().Length > 0)) ? string.Join(",", b.VolumeInfo.Authors.ToArray()) : "",
-                        Thumbnail = ((b.VolumeInfo.ImageLinks != null) && (b.VolumeInfo.ImageLinks.SmallThumbnail != null)) ? b.VolumeInfo.ImageLinks.SmallThumbnail : "",
-                        Subtitle = b.VolumeInfo.Subtitle ?? " ",
-                        PublishedYear = b.VolumeInfo.PublishedDate ?? "Not Available",
-                        Publisher = b.VolumeInfo.Publisher ?? "Not Available",
-                        Description = b.VolumeInfo.Description ?? "Not Available",
-                        PageCount = b.VolumeInfo.PageCount,
-                    }).ToList();
-                    return books;
+                        errorMessage = "There is problem getting data. Please check your connection.";
+                    }
+                    else
+                    {
+                        var books = pReturn.items.Select(b => new Book
+                        {
+                            Id = b.Id,
+                            Title = b.VolumeInfo.Title,
+                            Author = ((b.VolumeInfo.Authors != null) && (b.VolumeInfo.Authors.ToArray().Length > 0)) ? string.Join(",", b.VolumeInfo.Authors.ToArray()) : "",
+                            Thumbnail = ((b.VolumeInfo.ImageLinks != null) && (b.VolumeInfo.ImageLinks.SmallThumbnail != null)) ? b.VolumeInfo.ImageLinks.SmallThumbnail : "",
+                            Subtitle = b.VolumeInfo.Subtitle ?? " ",
+                            PublishedYear = b.VolumeInfo.PublishedDate ?? "Not Available",
+                            Publisher = b.VolumeInfo.Publisher ?? "Not Available",
+                            Description = b.VolumeInfo.Description ?? "Not Available",
+                            PageCount = b.VolumeInfo.PageCount,
+                        }).ToList();
+                        errorMessage = "";
+                        return Tuple.Create(books, errorMessage);
+                    }
                 }
             }
-            return new List<Book>();
+            catch (Exception ex)
+            {
+                errorMessage = "There is problem getting data. Please check your connection.";
+                var msg = ex.Message;
+
+            }
+
+            return Tuple.Create( new List<Book>(), errorMessage) ;
 
         }
+
+
+        //public static async Task<List<Book>> Search(string searchString, string searchByType)
+        //{
+        //    HttpClient client = new HttpClient();
+        //    int maxResults = 40;
+        //    var queryUrl = bookService.BaseUri +
+        //        "volumes?q=" + 
+        //        searchByType + ":" + 
+        //        searchString + 
+        //        "&maxResults=" + 
+        //        maxResults.ToString(); 
+        //    try
+        //    {
+        //        HttpResponseMessage response = await client.GetAsync(queryUrl);
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var result = await response.Content.ReadAsStringAsync();
+        //            var pReturn = JsonConvert.DeserializeObject<ResVal>(result);
+        //            if (pReturn == null)
+        //            {
+
+        //            }
+        //            else
+        //            {
+        //                var books = pReturn.items.Select(b => new Book
+        //                {
+        //                    Id = b.Id,
+        //                    Title = b.VolumeInfo.Title,
+        //                    Author = ((b.VolumeInfo.Authors != null) && (b.VolumeInfo.Authors.ToArray().Length > 0)) ? string.Join(",", b.VolumeInfo.Authors.ToArray()) : "",
+        //                    Thumbnail = ((b.VolumeInfo.ImageLinks != null) && (b.VolumeInfo.ImageLinks.SmallThumbnail != null)) ? b.VolumeInfo.ImageLinks.SmallThumbnail : "",
+        //                    Subtitle = b.VolumeInfo.Subtitle ?? " ",
+        //                    PublishedYear = b.VolumeInfo.PublishedDate ?? "Not Available",
+        //                    Publisher = b.VolumeInfo.Publisher ?? "Not Available",
+        //                    Description = b.VolumeInfo.Description ?? "Not Available",
+        //                    PageCount = b.VolumeInfo.PageCount,
+        //                }).ToList();
+        //                return books;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        var msg = ex.Message;
+        //    }
+            
+        //    return new List<Book>();
+
+        //}
 
 
         //public static async Task<Volume> SearchBooks(string searchString, int offset, int count)
