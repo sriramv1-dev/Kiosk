@@ -9,12 +9,14 @@ namespace Kiosk.MVVMBase
 {
     public class RelayCommand<T> : ICommand
     {
+
         readonly Action<T> _execute = null;
+        //readonly Action _executeNoParams = null;
         readonly Predicate<T> _canExecute = null;
 
 
         public RelayCommand(Action<T> execute) : this(execute, null) { }
-        
+        //public RelayCommand(Action _executeNoParams) : this(_executeNoParams, null) { }
 
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
@@ -23,6 +25,7 @@ namespace Kiosk.MVVMBase
                 throw new ArgumentNullException("execute");
             }
             this._execute = execute;
+            //this._executeNoParams = executeNoParams;
             this._canExecute = canExecute;
         }
 
@@ -44,5 +47,10 @@ namespace Kiosk.MVVMBase
             _execute((T)parameter);
 
         }
+
+        //public void ExecuteNoParams(object parameter)
+        //{
+        //    _executeNoParams();
+        //}
     }
 }

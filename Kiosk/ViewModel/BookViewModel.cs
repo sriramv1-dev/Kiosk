@@ -19,21 +19,11 @@ namespace Kiosk.ViewModel
         {
             SearchByTitle = true;
             BooksListVisible = Visibility.Hidden;
+            ClearSearchVisible = Visibility.Hidden;
         }
 
 
-        private ICommand _SearchBooksCommand { get; set; }
-        public ICommand SearchBooksCommand
-        {
-            get
-            {
-                if (_SearchBooksCommand == null)
-                {
-                    _SearchBooksCommand = new RelayCommand<string>(GetBooks);
-                }
-                return _SearchBooksCommand;
-            }
-        }
+
         
 
         private string _SearchText;
@@ -62,10 +52,12 @@ namespace Kiosk.ViewModel
                     if (_BookList != null && _BookList.Count > 0)
                     {
                         BooksListVisible = Visibility.Visible;
+                        ClearSearchVisible = Visibility.Visible;
                     }
                     else
                     {
                         BooksListVisible = Visibility.Hidden;
+                        ClearSearchVisible = Visibility.Hidden;
                     }
                     this.OnPropertyChanged("BookList");
                 }
@@ -86,6 +78,20 @@ namespace Kiosk.ViewModel
             }
         }
 
+        private Visibility _ClearSearchVisible;
+        public Visibility ClearSearchVisible
+        {
+            get { return _ClearSearchVisible; }
+            set
+            {
+                if (value != _ClearSearchVisible)
+                {
+                    _ClearSearchVisible = value;
+                    this.OnPropertyChanged("ClearSearchVisible");
+                }
+            }
+        }
+
         private bool _SearchByTitle;
         public bool SearchByTitle
         {
@@ -100,7 +106,6 @@ namespace Kiosk.ViewModel
             }
         }
 
-        // SearchByAuthor
         private bool _SearchByAuthor;
         public bool SearchByAuthor
         {
@@ -115,26 +120,51 @@ namespace Kiosk.ViewModel
             }
         }
 
+        private ICommand _SearchBooksCommand { get; set; }
+        public ICommand SearchBooksCommand
+        {
+            get
+            {
+                if (_SearchBooksCommand == null)
+                {
+                    _SearchBooksCommand = new RelayCommand<string>(GetBooks);
+                }
+                return _SearchBooksCommand;
+            }
+        }
+
+        private ICommand _ClearSearchCommand { get; set; }
+        public ICommand ClearSearchCommand
+        {
+            get
+            {
+                if (_ClearSearchCommand == null)
+                {
+                    _ClearSearchCommand = new RelayCommand<string>(ClearSearch);
+                }
+                return _ClearSearchCommand;
+            }
+        }
+
+        public async void GetBooks(string SearchString)
+        {
+            
+            List<Book> result = new List<Book>();
+            string searchByType = SearchByTitle ? "title":SearchByAuthor ? "author":"title";
+            result = await BooksApi.Search(this.SearchText, searchByType);
+            BookList = new ObservableCollection<Book>(result);
+        }
+
+        public void ClearSearch(string SearchString)
+        {
+            SearchText = "";
+            BookList = new ObservableCollection<Book>();
+        }
+
         //public void GetBooks(string SearchString)
         //{
         //    var retVal = BooksApi.Search(this.SearchText);
         //    BookList = new ObservableCollection<Book>(retVal);
         //}
-
-        public async void GetBooks(string SearchString)
-        {
-            List<Book> result = new List<Book>();
-            if( SearchByTitle)
-            {
-                 result = await BooksApi.SearchByTitle(this.SearchText);               
-            }
-            if(SearchByAuthor)
-            {
-                 result = await BooksApi.SearchByAuthor(this.SearchText);
-                
-            }
-            BookList = new ObservableCollection<Book>(result);
-        }
-
     }
 }
