@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kiosk"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <Button Content="Search For Books" Click="SearchForBooks_Clicked"/>
     </StackPanel>

@@ -7,16 +7,18 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Kiosk.ViewModel
 {
     public class BookViewModel : ViewModelBase
     {
-
         public BookViewModel()
         {
             SearchByTitle = true;
+            BooksListVisible = Visibility.Hidden;
         }
 
 
@@ -32,6 +34,7 @@ namespace Kiosk.ViewModel
                 return _SearchBooksCommand;
             }
         }
+        
 
         private string _SearchText;
         public string SearchText
@@ -55,28 +58,28 @@ namespace Kiosk.ViewModel
             {
                 if(value != _BookList)
                 {
-                    _BookList = value;                 
+                    _BookList = value;
+                    if (_BookList != null && _BookList.Count > 0)
+                    {
+                        BooksListVisible = Visibility.Visible;
+                    }
+                    else
+                    {
+                        BooksListVisible = Visibility.Hidden;
+                    }
                     this.OnPropertyChanged("BookList");
                 }
             }
         }
     
-        private bool _BooksListVisible;
-        public bool BooksListVisible
+        private Visibility _BooksListVisible;
+        public Visibility BooksListVisible
         {
             get { return _BooksListVisible; }
             set
             {
                 if (value != _BooksListVisible)
                 {
-                    if(BookList.ToList().Count > 0)
-                    {
-                        value = true;
-                    }
-                    else
-                    {
-                        value = false;
-                    }
                     _BooksListVisible = value;
                     this.OnPropertyChanged("BooksListVisible");
                 }

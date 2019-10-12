@@ -184,23 +184,7 @@ namespace Kiosk.Api
             }            
         }
 
-        //public static List<Book> SearchByAuthor(string query)
-        //{
-        //    var listquery = bookService.Volumes.List(query);  //can get field
-        //    var res = listquery.Execute();
-        //    var books = res.Items.Select(b => new Book
-        //    {
-        //        Id = b.Id,
-        //        Title = b.VolumeInfo.Title,
-        //        Author = string.Join(",", b.VolumeInfo.Authors.ToArray()),
-        //        Thumbnail = b.VolumeInfo.ImageLinks.SmallThumbnail,
 
-        //        Subtitle = b.VolumeInfo.Subtitle,
-        //        Description = b.VolumeInfo.Description,
-        //        PageCount = b.VolumeInfo.PageCount,
-        //    }).ToList();
-        //    return books;
-        //}
     }
 
 }

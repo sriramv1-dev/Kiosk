@@ -1,4 +1,5 @@
-﻿using Kiosk.ViewModel;
+﻿using Kiosk.Model;
+using Kiosk.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Kiosk.View
 {
@@ -23,6 +25,28 @@ namespace Kiosk.View
         public BookView()
         {
             InitializeComponent();
+            
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DispatcherTimer timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            timer.Tick += timer_Tick;
+            timer.Start();
+        }
+
+        void timer_Tick(object sender, EventArgs e) {
+            var idleTime = IdleTimeDetector.GetIdleTimeInfo();
+            if (idleTime.IdleTime.TotalSeconds >= 10) {
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
+                DispatcherTimer timer = (DispatcherTimer)sender;
+                timer.Stop();
+            }
         }
     }
 }
