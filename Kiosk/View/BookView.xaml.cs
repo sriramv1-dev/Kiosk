@@ -40,8 +40,10 @@ namespace Kiosk.View
 
         void Timer_Tick(object sender, EventArgs e) {
             var idleTime = IdleTimeDetector.GetIdleTimeInfo();
-            if (idleTime.IdleTime.TotalSeconds >= 10) {
+            if (idleTime.IdleTime.TotalSeconds >= 60) {                
                 this.Close();
+                Window mainWindow = Application.Current.MainWindow;
+                mainWindow.Show();
                 DispatcherTimer timer = (DispatcherTimer)sender;
                 timer.Stop();
             }

@@ -34,8 +34,21 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <StackPanel Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center" >
-
+    <StackPanel Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid Visibility="{Binding ErrorMessageVisible}" Margin="0,0,0,10">
+            <Border BorderBrush="Red" BorderThickness="1">
+                <Grid HorizontalAlignment="Center" Margin="0,10,0,10"  >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ErrorMessage}" Visibility="{Binding ErrorMessageVisible}"  />
+                </Grid>
+            </Border>
+        </Grid>
         <Grid Margin="0,0,0,10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -44,7 +57,11 @@
                 <ColumnDefinition Width="0.75*"/>
                 <ColumnDefinition Width="0.25*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" x:Name="searchTextBox" Text="{Binding SearchText}" />
+            <TextBox Grid.Column="0" x:Name="searchTextBox" Text="{Binding SearchText}">
+                <!--<TextBox.InputBindings>
+                    <KeyBinding Command="{Binding SearchBooksCommand}" Key="Enter" />
+                </TextBox.InputBindings>-->
+            </TextBox>
             <!--Style="{StaticResource ResourceKey=flatTextBox}"-->
 
             <Button Grid.Column="1" Content="Search" Command="{Binding Path=SearchBooksCommand}"/>

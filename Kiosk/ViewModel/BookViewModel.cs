@@ -1,6 +1,7 @@
 ﻿using Kiosk.Api;
 using Kiosk.Model;
 using Kiosk.MVVMBase;
+using Kiosk.Other;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,6 +21,8 @@ namespace Kiosk.ViewModel
             SearchByTitle = true;
             BooksListVisible = Visibility.Hidden;
             ClearSearchVisible = Visibility.Hidden;
+            ErrorMessage = "";
+            ErrorMessageVisible = Visibility.Hidden;        
         }
 
         private string _SearchText;
@@ -32,6 +35,29 @@ namespace Kiosk.ViewModel
                 {
                     _SearchText = value;
                     this.OnPropertyChanged("SearchText");
+                }
+            }
+        }
+
+        private string _ErrorMessage;
+        public string ErrorMessage
+        {
+            get { return _ErrorMessage; }
+            set
+            {
+                if (value != _ErrorMessage)
+                {
+                    _ErrorMessage = value;
+                    if (_ErrorMessage != null && _ErrorMessage.Trim() == "")
+                    {
+                        ErrorMessageVisible = Visibility.Hidden;
+                    }
+                    else
+                    {
+                        ErrorMessageVisible = Visibility.Visible;
+                    }
+                    
+                    this.OnPropertyChanged("ErrorMessage");
                 }
             }
         }
@@ -84,6 +110,20 @@ namespace Kiosk.ViewModel
                 {
                     _ClearSearchVisible = value;
                     this.OnPropertyChanged("ClearSearchVisible");
+                }
+            }
+        }
+
+        private Visibility _ErrorMessageVisible;
+        public Visibility ErrorMessageVisible
+        {
+            get { return _ErrorMessageVisible; }
+            set
+            {
+                if (value != _ErrorMessageVisible)
+                {
+                    _ErrorMessageVisible = value;
+                    this.OnPropertyChanged("ErrorMessageVisible");
                 }
             }
         }
@@ -142,14 +182,30 @@ namespace Kiosk.ViewModel
             }
         }
 
-
-
         public async void GetBooks(string SearchString)
         {
-            
+            int validated = Validations.ValidateSearchString(SearchText);
             List<Book> result = new List<Book>();
-            string searchByType = SearchByTitle ? "title":SearchByAuthor ? "author":"title";
-            result = await BooksApi.Search(this.SearchText, searchByType);
+            switch (validated)
+            {
+                case 0:
+                    ErrorMessage = "";
+                    string searchByType = SearchByTitle ? "title" : SearchByAuthor ? "author" : "title";
+                    result = await BooksApi.Search(this.SearchText, searchByType);                    
+                    break;
+                case 1:
+                    ErrorMessage = "Search text should not be empty";
+                    break;
+                case 2:
+                    ErrorMessage = "Search text should not have more than 50 characters";
+                    break;
+                case 3:
+                    ErrorMessage = "Search text should be alphnumeric";
+                    break;
+                case 4:
+                    ErrorMessage = "Search text should be alphanumeric";
+                    break;
+            }                                    
             BookList = new ObservableCollection<Book>(result);
         }
 
