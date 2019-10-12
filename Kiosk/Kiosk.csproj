@@ -81,6 +81,7 @@
     <Compile Include="Model\ResVal.cs" />
     <Compile Include="MVVMBase\RelayCommand.cs" />
     <Compile Include="MVVMBase\ViewModelBase.cs" />
+    <Compile Include="Other\Validations.cs" />
     <Compile Include="ViewModel\BookViewModel.cs" />
     <Compile Include="View\BookView.xaml.cs">
       <DependentUpon>BookView.xaml</DependentUpon>

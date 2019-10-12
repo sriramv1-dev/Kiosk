@@ -30,9 +30,8 @@ namespace Kiosk
         {
             try
             {
-                Hide();
                 BookView bookView = new BookView();
-                bookView.Show();
+                bookView.ShowDialog();
             }
             catch(Exception ex)
             {

@@ -34,19 +34,19 @@ namespace Kiosk.View
             {
                 Interval = TimeSpan.FromSeconds(1)
             };
-            timer.Tick += timer_Tick;
+            timer.Tick += Timer_Tick;
             timer.Start();
         }
 
-        void timer_Tick(object sender, EventArgs e) {
+        void Timer_Tick(object sender, EventArgs e) {
             var idleTime = IdleTimeDetector.GetIdleTimeInfo();
             if (idleTime.IdleTime.TotalSeconds >= 10) {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
                 this.Close();
                 DispatcherTimer timer = (DispatcherTimer)sender;
                 timer.Stop();
             }
         }
+
+        private void Done_Searching(object sender, RoutedEventArgs e) => this.Close();
     }
 }

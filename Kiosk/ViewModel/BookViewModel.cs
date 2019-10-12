@@ -22,10 +22,6 @@ namespace Kiosk.ViewModel
             ClearSearchVisible = Visibility.Hidden;
         }
 
-
-
-        
-
         private string _SearchText;
         public string SearchText
         {
@@ -146,6 +142,8 @@ namespace Kiosk.ViewModel
             }
         }
 
+
+
         public async void GetBooks(string SearchString)
         {
             
@@ -160,11 +158,5 @@ namespace Kiosk.ViewModel
             SearchText = "";
             BookList = new ObservableCollection<Book>();
         }
-
-        //public void GetBooks(string SearchString)
-        //{
-        //    var retVal = BooksApi.Search(this.SearchText);
-        //    BookList = new ObservableCollection<Book>(retVal);
-        //}
     }
 }

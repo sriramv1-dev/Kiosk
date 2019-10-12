@@ -30,7 +30,7 @@ namespace Kiosk.Api
         {
             HttpClient client = new HttpClient();
             int maxResults = 40;
-            var queryUrl = bookService.BaseUri + 
+            var queryUrl = bookService.BaseUri +
                 "volumes?q=" + 
                 searchByType + ":" + 
                 searchString + 
