@@ -7,18 +7,16 @@ using Google.Apis.Books.v1;
 using Google.Apis.Services;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace Kiosk.ServiceLayer
 {
     public class BooksApi
     {
-        private static readonly string API_KEY = "Your API key";
-        private static readonly string APP_NAME = "Your App Name";
-
         private static readonly BooksService bookService = new BooksService(new BaseClientService.Initializer
         {
-            ApiKey = API_KEY,
-            ApplicationName = APP_NAME
+            ApiKey = ConfigurationManager.AppSettings["API_KEY"].ToString(),
+            ApplicationName = ConfigurationManager.AppSettings["APP_NAME"].ToString()
         });
 
 

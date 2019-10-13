@@ -26,8 +26,8 @@ namespace Kiosk.Views
         }
 
         void Timer_Tick(object sender, EventArgs e) {
-            var idleTime = InactivityHelper.GetIdleTimeInfo();
-            if (idleTime.IdleTime.TotalSeconds >= 60) {                
+            var inactiveTime = InactivityHelper.GetInactiveTimeInfo();
+            if (inactiveTime.InactiveTime.TotalSeconds >= 60) {                
                 this.Close();
                 Window mainWindow = Application.Current.MainWindow;
                 mainWindow.Show();

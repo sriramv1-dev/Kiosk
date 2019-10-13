@@ -10,43 +10,43 @@ namespace Kiosk.Helpers
     public static class InactivityHelper
     {
         [DllImport("user32.dll")]
-        static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
+        static extern bool GetLastInputInfo(ref LastInputInfo refLastInputInfo);
 
-        public static IdleTimeInfo GetIdleTimeInfo()
+        public static InactivityTimeInfo GetInactiveTimeInfo()
         {
             int systemUptime = Environment.TickCount,
                 lastInputTicks = 0,
-                idleTicks = 0;
+                inactiveTicks = 0;
 
-            LASTINPUTINFO lastInputInfo = new LASTINPUTINFO();
-            lastInputInfo.cbSize = (uint)Marshal.SizeOf(lastInputInfo);
-            lastInputInfo.dwTime = 0;
+            LastInputInfo lastInputInfo = new LastInputInfo();
+            lastInputInfo.infoSize = (uint)Marshal.SizeOf(lastInputInfo);
+            lastInputInfo.downTime = 0;
 
             if (GetLastInputInfo(ref lastInputInfo))
             {
-                lastInputTicks = (int)lastInputInfo.dwTime;
-                idleTicks = systemUptime - lastInputTicks;
+                lastInputTicks = (int)lastInputInfo.downTime;
+                inactiveTicks = systemUptime - lastInputTicks;
             }
 
-            return new IdleTimeInfo
+            return new InactivityTimeInfo
             {
-                LastInputTime = DateTime.Now.AddMilliseconds(-1 * idleTicks),
-                IdleTime = new TimeSpan(0, 0, 0, 0, idleTicks),
-                SystemUptimeMilliseconds = systemUptime,
+                LastInputTime = DateTime.Now.AddMilliseconds(-1 * inactiveTicks),
+                InactiveTime = new TimeSpan(0, 0, 0, 0, inactiveTicks),
+                SystemUpTimeMilliseconds = systemUptime,
             };
         }
     }
 
-    public class IdleTimeInfo
+    public class InactivityTimeInfo 
     {
         public DateTime LastInputTime { get; internal set; }
-        public TimeSpan IdleTime { get; internal set; }
-        public int SystemUptimeMilliseconds { get; internal set; }
+        public TimeSpan InactiveTime { get; internal set; }
+        public int SystemUpTimeMilliseconds { get; internal set; }
     }
 
-    internal struct LASTINPUTINFO
+    internal struct LastInputInfo
     {
-        public uint cbSize;
-        public uint dwTime;
+        public uint infoSize;
+        public uint downTime;
     }
 }
