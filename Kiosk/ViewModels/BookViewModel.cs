@@ -186,12 +186,12 @@ namespace Kiosk.ViewModels
             {
                 case 0:
                     ErrorMessage = "";
-                    string searchByType = SearchByTitle ? "title" : SearchByAuthor ? "author" : "title";
+                    string searchByType = SearchByTitle ? "title" : SearchByAuthor ? "author" : "title";                    
                     var retVal = await BooksApi.Search(this.SearchText, searchByType);
-
-                    if (retVal.Item1)
-                    {
-                        result = retVal.Item2;
+                    bool ConnectionSuccesful = retVal.Item1;
+                    result = retVal.Item2;
+                    if (ConnectionSuccesful)
+                    {                       
                         if (result.Count == 0)
                         {
                             ErrorMessage = "Your search query resulted 0 records";

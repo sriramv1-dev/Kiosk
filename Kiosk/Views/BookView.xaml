@@ -14,21 +14,7 @@
     </Window.DataContext>
     <Window.Resources>
         <ResourceDictionary>
-            <Color x:Key="detailMark">#FFA1A9B3</Color>
-            <SolidColorBrush x:Key="detailMarkBrush" Color="{StaticResource ResourceKey=detailMark}" />
 
-            <Style x:Key="flatTextBox" TargetType="{x:Type TextBox}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type TextBox}">
-                            <Grid>
-                                <Rectangle Stroke="{StaticResource ResourceKey=detailMarkBrush}" StrokeThickness="1"/>
-                                <TextBox Margin="1"  Text="{TemplateBinding Text}" BorderThickness="0"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
 
         </ResourceDictionary>
     </Window.Resources>
@@ -47,7 +33,7 @@
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" MaxWidth="1000" Height="30">
             <TextBox x:Name="searchTextBox"  FontSize="16" VerticalContentAlignment="Center" Width="600" Text="{Binding SearchText}"/>
             <Button Content="Search" Width="100" Command="{Binding Path=SearchBooksCommand}" FontWeight="Bold"/>
-            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" VerticalAlignment="Center" MaxWidth="300" TextWrapping="WrapWithOverflow"
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" VerticalAlignment="Center" MaxWidth="300"  Height="30" TextWrapping="WrapWithOverflow"
                        Margin="10, 0, 0, 0" Visibility="{Binding ErrorMessageVisible}"  />
         </StackPanel>
         <Grid HorizontalAlignment="Center">

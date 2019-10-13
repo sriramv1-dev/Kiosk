@@ -55,9 +55,10 @@ namespace Kiosk.ServiceLayer
                             PublishedYear = b.VolumeInfo.PublishedDate ?? "Not Available",
                             Publisher = b.VolumeInfo.Publisher ?? "Not Available",
                             Description = b.VolumeInfo.Description ?? "Not Available",
-                            ISBN = b.VolumeInfo.IndustryIdentifiers.FirstOrDefault().Identifier ?? "Not Available"
+                            //ISBN =  b.VolumeInfo.IndustryIdentifiers.FirstOrDefault().Identifier ?? "Not Available"
+                            ISBN = ((b.VolumeInfo != null) && (b.VolumeInfo.IndustryIdentifiers != null) && (b.VolumeInfo.IndustryIdentifiers.Count > 0)) ? b.VolumeInfo.IndustryIdentifiers.FirstOrDefault().Identifier : "Not Available"
                         }).ToList();
-                        errorMessage = "";
+                        errorMessage = ""; 
                         return Tuple.Create(true, books, errorMessage);
                     }
                 }
@@ -70,7 +71,7 @@ namespace Kiosk.ServiceLayer
             {
                 errorMessage = ex.Message + " Please check your internet connection.";
             }
-            return Tuple.Create(false, new List<Book>(), errorMessage);
+            return Tuple.Create( false, new List<Book>(), errorMessage);
         }
     }
 
