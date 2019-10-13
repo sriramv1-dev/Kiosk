@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Kiosk.ViewModels"
         mc:Ignorable="d"
         SizeToContent="Manual"
-        Title="BookView" Height="750" Width="1200" WindowStartupLocation="CenterScreen"
+        Title="BookView" Height="750" Width="1200" WindowStartupLocation="CenterScreen" Background="Beige"
         Loaded="Window_Loaded">
     <Window.DataContext>
         <local:BookViewModel x:Name="VM" />
@@ -19,21 +19,22 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <StackPanel Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top">
-        <TextBlock HorizontalAlignment="Center" FontWeight="Bold" FontSize="60">
-            BooK KiosK
-        </TextBlock>
+    <StackPanel HorizontalAlignment="Center" Margin="20" VerticalAlignment="Top">
+        <TextBlock FontFamily="Arial" FontSize="60" FontWeight="Bold" Foreground="Chocolate" Margin="0,0,0,20" HorizontalAlignment="Center" Text="Online Book Kiosk" />
+
+
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="300" Margin="0,0,0,10">
             <Button Content="Done Searching" Margin="0,0,10,0" Height="30" Width="100"
-                 Click="Done_Searching" FontWeight="Bold"/>
-            <Button Content="Clear Search" FontWeight="Bold" Height="30" Width="100"
+                 Click="Done_Searching" Background="White" FontWeight="SemiBold"/>
+            <Button Content="Clear Search" Background="White" FontWeight="SemiBold" Height="30" Width="100"
                 Command="{Binding Path=ClearSearchCommand}" Visibility="{Binding ClearSearchVisible}"/>
         </StackPanel>
         
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" MaxWidth="1000" Height="30">
-            <TextBox x:Name="searchTextBox"  FontSize="16" VerticalContentAlignment="Center" Width="600" Text="{Binding SearchText}"/>
-            <Button Content="Search" Width="100" Command="{Binding Path=SearchBooksCommand}" FontWeight="Bold"/>
+            <TextBox BorderBrush="{Binding SearchTextBrush}" FontSize="16" VerticalContentAlignment="Center" Width="600" Text="{Binding SearchText}"/>
+            <Button Content="Search" Width="100" Command="{Binding Path=SearchBooksCommand}" Background="White" FontWeight="SemiBold"/>
             <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" VerticalAlignment="Center" MaxWidth="300"  Height="30" TextWrapping="WrapWithOverflow"
+                       FontWeight="Bold"
                        Margin="10, 0, 0, 0" Visibility="{Binding ErrorMessageVisible}"  />
         </StackPanel>
         <Grid HorizontalAlignment="Center">

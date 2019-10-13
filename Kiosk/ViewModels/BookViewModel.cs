@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using Kiosk.ViewModels;
+using System.Windows.Media;
 
 namespace Kiosk.ViewModels
 {
@@ -16,7 +16,7 @@ namespace Kiosk.ViewModels
             SearchByTitle = true;
             BooksListVisible = Visibility.Hidden;
             ClearSearchVisible = Visibility.Hidden;
-            ErrorMessageVisible = Visibility.Hidden;
+            ErrorMessageVisible = Visibility.Hidden;           
             ErrorMessage = "";
 
         }
@@ -47,10 +47,12 @@ namespace Kiosk.ViewModels
                     if (_ErrorMessage != null && _ErrorMessage.Trim() == "")
                     {
                         ErrorMessageVisible = Visibility.Hidden;
+                        SearchTextBrush = Brushes.Green;
                     }
                     else
                     {
                         ErrorMessageVisible = Visibility.Visible;
+                        SearchTextBrush = Brushes.OrangeRed;
                     }
 
                     this.OnPropertyChanged("ErrorMessage");
@@ -120,6 +122,20 @@ namespace Kiosk.ViewModels
                 {
                     _ErrorMessageVisible = value;
                     this.OnPropertyChanged("ErrorMessageVisible");
+                }
+            }
+        }
+
+        private SolidColorBrush _SearchTextBrush { get; set; }
+        public SolidColorBrush SearchTextBrush
+        {
+            get { return _SearchTextBrush; }
+            set
+            {
+                if (value != _SearchTextBrush)
+                {
+                    _SearchTextBrush = value;
+                    this.OnPropertyChanged("SearchTextBrush");
                 }
             }
         }
