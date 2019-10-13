@@ -12,8 +12,8 @@ namespace Kiosk.ServiceLayer
 {
     public class BooksApi
     {
-        private static readonly string API_KEY = "AIzaSyCjvWhUyRzuH_9cUXw6qZ7Ys0e4nOGAB1o";
-        private static readonly string APP_NAME = "Google Books API";
+        private static readonly string API_KEY = "Your API key";
+        private static readonly string APP_NAME = "Your App Name";
 
         private static readonly BooksService bookService = new BooksService(new BaseClientService.Initializer
         {
