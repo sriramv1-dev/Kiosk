@@ -3,7 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Kiosk.View
+namespace Kiosk.Views
 {
     /// <summary>
     /// Interaction logic for BookView.xaml

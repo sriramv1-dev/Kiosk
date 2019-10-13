@@ -55,7 +55,6 @@ namespace Kiosk.ServiceLayer
                             PublishedYear = b.VolumeInfo.PublishedDate ?? "Not Available",
                             Publisher = b.VolumeInfo.Publisher ?? "Not Available",
                             Description = b.VolumeInfo.Description ?? "Not Available",
-                            //ISBN =  b.VolumeInfo.IndustryIdentifiers.FirstOrDefault().Identifier ?? "Not Available"
                             ISBN = ((b.VolumeInfo != null) && (b.VolumeInfo.IndustryIdentifiers != null) && (b.VolumeInfo.IndustryIdentifiers.Count > 0)) ? b.VolumeInfo.IndustryIdentifiers.FirstOrDefault().Identifier : "Not Available"
                         }).ToList();
                         errorMessage = ""; 
