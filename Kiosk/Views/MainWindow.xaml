@@ -3,16 +3,40 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Kiosk"
+        xmlns:local="clr-namespace:Kiosk.Views" Background="White"
         mc:Ignorable="d"
         Title="MainWindow" Height="750" Width="1200" WindowStartupLocation="CenterScreen">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, 80, 0, 0">
-        <TextBlock HorizontalAlignment="Center" FontWeight="Bold" FontSize="60">
-            BooK KiosK
-        </TextBlock>
-        <TextBlock HorizontalAlignment="Center" FontWeight="Bold" FontSize="20" FontStyle="Italic" Margin="0, 20, 0, 20">
-            Welcome to Ramz book kiosk. Please click on 'Search' to continue.
-        </TextBlock>
-        <Button Content="Search For Books" Click="SearchForBooks_Clicked" Width="150" Height="30"/>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, 20, 0, 40">
+        <TextBlock HorizontalAlignment="Center" FontWeight="Bold" FontSize="60" 
+                   Foreground="Chocolate" FontFamily="Arial"
+                   Text="Online Book Kiosk"/>
+        <TextBlock HorizontalAlignment="Center" FontWeight="Bold" FontSize="20" FontStyle="Italic" Margin="0, 20, 0, 20" 
+                   Text="Welcome to Ramz book kiosk. Please click on 'Search' to continue."/>
+        <Button Content="Search For Books" Click="SearchForBooks_Clicked" 
+                Width="180" Height="40"
+                 FontWeight="SemiBold" Margin="0, 120, 0, 20">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="AntiqueWhite"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="Chocolate"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
     </StackPanel>
 </Window>
