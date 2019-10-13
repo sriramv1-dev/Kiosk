@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kiosk.Other
+﻿namespace Kiosk.Helpers
 {
-    public static class Validations
+    public static class ValidationHelper
     {
         public enum StringValidation
         {

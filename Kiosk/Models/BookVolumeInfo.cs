@@ -1,15 +1,11 @@
 ﻿using Google.Apis.Books.v1.Data;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Kiosk.Model
+namespace Kiosk.Models
 {
-    public class ResVal
+    public class BookVolumeInfo
     {
-        public ResVal()
+        public BookVolumeInfo()
         {
             items = new List<Volume>();
         }

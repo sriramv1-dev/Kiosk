@@ -76,17 +76,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Api\BooksApi.cs" />
-    <Compile Include="Other\IdleTimeDetector.cs" />
-    <Compile Include="Model\ResVal.cs" />
-    <Compile Include="MVVMBase\RelayCommand.cs" />
-    <Compile Include="MVVMBase\ViewModelBase.cs" />
-    <Compile Include="Other\Validations.cs" />
-    <Compile Include="ViewModel\BookViewModel.cs" />
-    <Compile Include="View\BookView.xaml.cs">
+    <Compile Include="ServiceLayer\BooksApi.cs" />
+    <Compile Include="Helpers\InactivityHelper.cs" />
+    <Compile Include="Models\BookVolumeInfo.cs" />
+    <Compile Include="ViewModels\ViewModelHelpers\RelayCommand.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="Helpers\ValidationHelper.cs" />
+    <Compile Include="ViewModels\BookViewModel.cs" />
+    <Compile Include="Views\BookView.xaml.cs">
       <DependentUpon>BookView.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -94,17 +94,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\BookView.xaml">
+    <Page Include="Views\BookView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Book.cs" />
+    <Compile Include="Models\Book.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -131,5 +131,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

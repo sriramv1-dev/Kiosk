@@ -1,28 +1,24 @@
-﻿using Kiosk.Api;
-using Kiosk.Model;
-using Kiosk.MVVMBase;
-using Kiosk.Other;
-using System;
+﻿using Kiosk.ServiceLayer;
+using Kiosk.Models;
+using Kiosk.Helpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
+using Kiosk.ViewModels;
 
-namespace Kiosk.ViewModel
+namespace Kiosk.ViewModels
 {
-    public class BookViewModel : ViewModelBase
+    public class BookViewModel : BaseViewModel
     {
         public BookViewModel()
         {
             SearchByTitle = true;
             BooksListVisible = Visibility.Hidden;
             ClearSearchVisible = Visibility.Hidden;
+            ErrorMessageVisible = Visibility.Hidden;
             ErrorMessage = "";
-            ErrorMessageVisible = Visibility.Hidden;        
+
         }
 
         private string _SearchText;
@@ -31,7 +27,7 @@ namespace Kiosk.ViewModel
             get { return _SearchText; }
             set
             {
-                if(value != _SearchText)
+                if (value != _SearchText)
                 {
                     _SearchText = value;
                     this.OnPropertyChanged("SearchText");
@@ -56,7 +52,7 @@ namespace Kiosk.ViewModel
                     {
                         ErrorMessageVisible = Visibility.Visible;
                     }
-                    
+
                     this.OnPropertyChanged("ErrorMessage");
                 }
             }
@@ -68,7 +64,7 @@ namespace Kiosk.ViewModel
             get { return _BookList; }
             set
             {
-                if(value != _BookList)
+                if (value != _BookList)
                 {
                     _BookList = value;
                     if (_BookList != null && _BookList.Count > 0)
@@ -85,7 +81,7 @@ namespace Kiosk.ViewModel
                 }
             }
         }
-    
+
         private Visibility _BooksListVisible;
         public Visibility BooksListVisible
         {
@@ -134,7 +130,7 @@ namespace Kiosk.ViewModel
             get { return _SearchByTitle; }
             set
             {
-                if(value != _SearchByTitle)
+                if (value != _SearchByTitle)
                 {
                     _SearchByTitle = value;
                     this.OnPropertyChanged("SearchByTitle");
@@ -184,31 +180,41 @@ namespace Kiosk.ViewModel
 
         public async void GetBooks(string SearchString)
         {
-            int validated = Validations.ValidateSearchString(SearchText);
+            int validated = ValidationHelper.ValidateSearchString(SearchText);
             List<Book> result = new List<Book>();
             switch (validated)
             {
                 case 0:
                     ErrorMessage = "";
                     string searchByType = SearchByTitle ? "title" : SearchByAuthor ? "author" : "title";
-                    //result = await BooksApi.Search(this.SearchText, searchByType);       
                     var retVal = await BooksApi.Search(this.SearchText, searchByType);
-                    result = retVal.Item1;
-                    ErrorMessage = retVal.Item2;
+
+                    if (retVal.Item1)
+                    {
+                        result = retVal.Item2;
+                        if (result.Count == 0)
+                        {
+                            ErrorMessage = "Your search query resulted 0 records";
+                        }
+                    }
+                    else
+                    {
+                        ErrorMessage = retVal.Item3;
+                    }
                     break;
                 case 1:
-                    ErrorMessage = "Search text should not be empty";
+                    ErrorMessage = "* Search text should not be empty";
                     break;
                 case 2:
-                    ErrorMessage = "Search text should not have more than 50 characters";
+                    ErrorMessage = "* Search text should not have more than 50 characters";
                     break;
                 case 3:
-                    ErrorMessage = "Search text should be alphnumeric";
+                    ErrorMessage = "* Search text should be alphnumeric";
                     break;
                 case 4:
-                    ErrorMessage = "Search text should be alphanumeric";
+                    ErrorMessage = "* Search text should be alphanumeric";
                     break;
-            }                                    
+            }
             BookList = new ObservableCollection<Book>(result);
         }
 

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace Kiosk.MVVMBase 
+namespace Kiosk.ViewModels
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         

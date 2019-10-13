@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kiosk.Model
+namespace Kiosk.Helpers
 {
-    public static class IdleTimeDetector
+    public static class InactivityHelper
     {
         [DllImport("user32.dll")]
         static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);

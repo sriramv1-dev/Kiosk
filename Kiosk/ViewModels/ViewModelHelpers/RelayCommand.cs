@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Kiosk.MVVMBase
+namespace Kiosk.ViewModels
 {
     public class RelayCommand<T> : ICommand
     {
@@ -18,11 +18,7 @@ namespace Kiosk.MVVMBase
 
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-            if (execute == null)
-            {
-                throw new ArgumentNullException("execute");
-            }
-            this._execute = execute;
+            this._execute = execute ?? throw new ArgumentNullException("execute");
             this._canExecute = canExecute;
         }
 
@@ -33,16 +29,8 @@ namespace Kiosk.MVVMBase
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null ? true : _canExecute((T)parameter);
+        public bool CanExecute(object parameter) => _canExecute == null ? true : _canExecute((T)parameter);
 
-        }
-
-        public void Execute(object parameter)
-        {
-            _execute((T)parameter);
-
-        }
+        public void Execute(object parameter) => _execute((T)parameter);
     }
 }
