@@ -16,7 +16,7 @@ namespace Kiosk.ViewModels
             SearchByTitle = true;
             BooksListVisible = Visibility.Hidden;
             ClearSearchVisible = Visibility.Hidden;
-            ErrorMessageVisible = Visibility.Hidden;           
+            ErrorMessageVisible = Visibility.Hidden;
             ErrorMessage = "";
 
         }
@@ -193,6 +193,7 @@ namespace Kiosk.ViewModels
                 return _ClearSearchCommand;
             }
         }
+            
 
         public async void GetBooks(string SearchString)
         {
@@ -222,7 +223,7 @@ namespace Kiosk.ViewModels
                     ErrorMessage = "* Search text should not be empty";
                     break;
                 case 2:
-                    ErrorMessage = "* Search text should not have more than 50 characters";
+                    ErrorMessage = "* Search text should not have more than 50 characters (spaces not included)";
                     break;
                 case 3:
                     ErrorMessage = "* Search text should be alphnumeric";

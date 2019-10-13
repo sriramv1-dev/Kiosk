@@ -14,7 +14,7 @@
         {
             if (string.IsNullOrEmpty(inputString))            
                 return  1;            
-            if (inputString.Length > 50)           
+            if (inputString.Trim().Length > 50)           
                 return 2;            
             if(HasOnlyDigits(inputString))            
                 return 3;            

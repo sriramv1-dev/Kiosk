@@ -12,7 +12,15 @@ namespace Kiosk.Views
     {
         public BookView()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch(Exception ex)
+            {
+                var msg = ex.Message;
+            }
+            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

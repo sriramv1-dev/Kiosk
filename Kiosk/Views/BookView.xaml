@@ -4,69 +4,42 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kiosk.ViewModels"
+        xmlns:userControls="clr-namespace:Kiosk.Views.UserControls"
         mc:Ignorable="d"
         SizeToContent="Manual"
-        Title="BookView" Height="750" Width="1200" WindowStartupLocation="CenterScreen" Background="Beige"
+        Title="BookView" Height="750" Width="1200" WindowStartupLocation="CenterScreen" Background="White"
+        
         Loaded="Window_Loaded">
     <Window.DataContext>
         <local:BookViewModel x:Name="VM" />
-
     </Window.DataContext>
     <Window.Resources>
-        <ResourceDictionary>
-            <Style x:Key="GridItemTextBlockStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="TextWrapping" Value="Wrap" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-            <Style x:Key="ErrorMessageTextBlockStyle" TargetType="TextBlock">
-                <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="Foreground" Value="Red" />
-                <Setter Property="Height" Value="30"/>
-                <Setter Property="Margin" Value="10, 0, 0, 0" />
-                <Setter Property="MaxWidth" Value="300"/>
-                <Setter Property="TextWrapping" Value = "WrapWithOverflow"/>
-                <Setter Property="VerticalAlignment" Value ="Center"/>
-            </Style>
-            <Style x:Key="DataGridLayoutStyle" TargetType="DataGrid">
-                <Setter Property="AutoGenerateColumns" Value="False" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CanUserAddRows" Value="False" />
-                <Setter Property="CanUserResizeColumns" Value="False" />
-                <Setter Property="GridLinesVisibility" Value="All" />
-                <Setter Property="Height" Value="500" />
-                <Setter Property="IsReadOnly" Value="True" />
-                <Setter Property="Margin" Value="0,10,0,10" />
-                <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
-                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible" />
-                <Setter Property="Width" Value="1000" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-            <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
-                <Setter Property="FontSize" Value="16" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
-                <Setter Property="Width" Value="600" />
-            </Style>
+        <ResourceDictionary >
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/BookViewStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
     <StackPanel HorizontalAlignment="Center" Margin="20" VerticalAlignment="Top">
-        <TextBlock FontFamily="Arial" FontSize="60" FontWeight="Bold" Foreground="Chocolate" Margin="0,0,0,20" HorizontalAlignment="Center" Text="Online Book Kiosk" />
+        
+        <!--Title-->
+        <userControls:TitleControl/>
 
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="300" Margin="0,0,0,10">
-            <Button Content="Done Searching" Margin="0,0,10,0" Height="30" Width="100"
-                 Click="Done_Searching" Background="White" FontWeight="SemiBold"/>
-            <Button Content="Clear Search" Background="White" FontWeight="SemiBold" Height="30" Width="100"
-                Command="{Binding Path=ClearSearchCommand}" Visibility="{Binding ClearSearchVisible}"/>
+        <!--"Done Searching" and "Clear Search" Buttons-->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="300" Margin="0,0,0,20">
+            <Button Content="Done Searching" Margin="0,0,10,0" Height="40" Width="100" Click="Done_Searching" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="Clear Search" Style="{StaticResource ButtonStyle}" Command="{Binding Path=ClearSearchCommand}" Visibility="{Binding ClearSearchVisible}" Height="40" Width="100" />
         </StackPanel>
         
+        <!--Search Text, Search Button and Error Messages-->
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" MaxWidth="1000" Height="30">
-            <TextBox BorderBrush="{Binding SearchTextBrush}"  Text="{Binding SearchText}" Style="{StaticResource SearchTextBoxStyle}"/>
-            <Button Content="Search" Width="100" Command="{Binding Path=SearchBooksCommand}" Background="White" FontWeight="SemiBold"/>
+            <TextBox BorderBrush="{Binding SearchTextBrush}"  Text="{Binding SearchText}"  Style="{StaticResource SearchTextBoxStyle}"/>
+            <Button Content="Search" Width="100" Command="{Binding Path=SearchBooksCommand}" Style="{StaticResource SearchButtonStyle}" />
             <TextBlock Text="{Binding ErrorMessage}" Visibility="{Binding ErrorMessageVisible}" Style="{StaticResource ErrorMessageTextBlockStyle}"/>
         </StackPanel>
+        
+        <!--Search By Title and Search By Author-->
         <Grid HorizontalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -77,23 +50,27 @@
                 <ColumnDefinition Width="300"/>
             </Grid.ColumnDefinitions>
 
-            <Grid  Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0, 5, 0, 0"   >
+            <Grid  Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-                <RadioButton Grid.Column="0" GroupName="seachGroup" IsChecked="{Binding SearchByTitle}" Command="{Binding Path=SearchBooksCommand}" Content="Search By Title" Margin="0,0,10,0"/>
-                <RadioButton Grid.Column="1" GroupName="seachGroup" IsChecked="{Binding SearchByAuthor}" Command="{Binding Path=SearchBooksCommand}" Content="Search By Author" Margin="10,0,0,0"/>
+                <RadioButton Grid.Column="0" GroupName="seachGroup" IsChecked="{Binding SearchByTitle}" Command="{Binding Path=SearchBooksCommand}" Content="Search By Title"  Style="{StaticResource RadioButtonStyle}" Margin="0,10,0,0"/>
+                <RadioButton Grid.Column="1" GroupName="seachGroup" IsChecked="{Binding SearchByAuthor}" Command="{Binding Path=SearchBooksCommand}" Content="Search By Author" Style="{StaticResource RadioButtonStyle}" Margin="10,10,0,0"/>
             </Grid>
         </Grid>
 
-        <DataGrid ItemsSource="{Binding BookList}" Visibility="{Binding BooksListVisible}" Style="{StaticResource DataGridLayoutStyle}">
+        <!--DataGrid with search data-->
+        <DataGrid CellStyle="{StaticResource DataGridCellStyle}" 
+                  ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                  ItemsSource="{Binding BookList}" Visibility="{Binding BooksListVisible}" 
+                  Style="{StaticResource DataGridLayoutStyle}" >
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Cover" Width="SizeToCells" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Image Source="{Binding Thumbnail}" Width="72" Margin="0, 2, 0, 2" Height="72" Stretch="Fill" />
+                                <Image Source="{Binding Thumbnail}" Style="{StaticResource ImageStyle}" />
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -101,11 +78,10 @@
                 <DataGridTemplateColumn  MaxWidth="300" Width="SizeToCells" Header="Title"  IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Grid.Row="0" Text="{Binding Title}" Style="{StaticResource GridItemTextBlockStyle}" />
+                            <TextBlock Grid.Row="0" Text="{Binding Title}" Style="{StaticResource GridItemTextBlockStyle}" FontWeight="SemiBold"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
                 <DataGridTemplateColumn Header="Author" Width="163">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
