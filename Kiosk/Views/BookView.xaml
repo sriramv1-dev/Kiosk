@@ -61,9 +61,13 @@
         </Grid>
 
         <!--DataGrid with search data-->
+        <StackPanel HorizontalAlignment="Right" Visibility="{Binding BooksListVisible}" >
+            <TextBlock Text="{Binding ItemCount}"  Style="{StaticResource ItemCountStyle}"/>
+        </StackPanel>
         <DataGrid CellStyle="{StaticResource DataGridCellStyle}" 
                   ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                  ItemsSource="{Binding BookList}" Visibility="{Binding BooksListVisible}" 
+                  ItemsSource="{Binding BookList}" 
+                  Visibility="{Binding BooksListVisible}" 
                   Style="{StaticResource DataGridLayoutStyle}" >
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Cover" Width="SizeToCells" IsReadOnly="True">

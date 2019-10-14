@@ -54,8 +54,21 @@ namespace Kiosk.ViewModels
                         ErrorMessageVisible = Visibility.Visible;
                         SearchTextBrush = Brushes.OrangeRed;
                     }
-
                     this.OnPropertyChanged("ErrorMessage");
+                }
+            }
+        }
+
+        private string _ItemCount;
+        public string ItemCount
+        {
+            get { return _ItemCount; }
+            set
+            {
+                if (value != _ItemCount)
+                {
+                    _ItemCount = value;
+                    this.OnPropertyChanged("ItemCount");
                 }
             }
         }
@@ -73,6 +86,7 @@ namespace Kiosk.ViewModels
                     {
                         BooksListVisible = Visibility.Visible;
                         ClearSearchVisible = Visibility.Visible;
+                        ItemCount = "Total Items: " + _BookList.Count.ToString();
                     }
                     else
                     {
