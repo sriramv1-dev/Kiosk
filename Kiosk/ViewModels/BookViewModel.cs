@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using static Kiosk.Helpers.Enumerations;
 
 namespace Kiosk.ViewModels
 {
@@ -207,22 +208,63 @@ namespace Kiosk.ViewModels
                 return _ClearSearchCommand;
             }
         }
-            
+
+
+        //public async void GetBooks(string SearchString)
+        //{
+        //    int validated = ValidationHelper.ValidateSearchString(SearchText);
+        //    List<Book> result = new List<Book>();
+        //    switch (validated)
+        //    {
+        //        case 0:
+        //            ErrorMessage = "";
+        //            string searchByType = SearchByTitle ? "title" : SearchByAuthor ? "author" : "title";                    
+        //            var retVal = await BooksApi.Search(this.SearchText, searchByType);
+        //            bool ConnectionSuccesful = retVal.Item1;
+        //            result = retVal.Item2;
+        //            if (ConnectionSuccesful)
+        //            {                       
+        //                if (result.Count == 0)
+        //                {
+        //                    ErrorMessage = "Your search query resulted 0 records";
+        //                }
+        //            }
+        //            else
+        //            {
+        //                ErrorMessage = retVal.Item3;
+        //            }
+        //            break;
+        //        case 1:
+        //            ErrorMessage = "* Search text should not be empty";
+        //            break;
+        //        case 2:
+        //            ErrorMessage = "* Search text should not have more than 50 characters (spaces not included)";
+        //            break;
+        //        case 3:
+        //            ErrorMessage = "* Search text should be alphnumeric";
+        //            break;
+        //        case 4:
+        //            ErrorMessage = "* Search text should be alphanumeric";
+        //            break;
+        //    }
+        //    BookList = new ObservableCollection<Book>(result);
+        //}
+
 
         public async void GetBooks(string SearchString)
         {
-            int validated = ValidationHelper.ValidateSearchString(SearchText);
+            StringValidationMessage validated = ValidationHelper.ValidateSearchString(SearchText);
             List<Book> result = new List<Book>();
             switch (validated)
             {
-                case 0:
+                case StringValidationMessage.StringIsGood:
                     ErrorMessage = "";
-                    string searchByType = SearchByTitle ? "title" : SearchByAuthor ? "author" : "title";                    
+                    string searchByType = SearchByTitle ? "title" : SearchByAuthor ? "author" : "title";
                     var retVal = await BooksApi.Search(this.SearchText, searchByType);
                     bool ConnectionSuccesful = retVal.Item1;
                     result = retVal.Item2;
                     if (ConnectionSuccesful)
-                    {                       
+                    {
                         if (result.Count == 0)
                         {
                             ErrorMessage = "Your search query resulted 0 records";
@@ -233,21 +275,22 @@ namespace Kiosk.ViewModels
                         ErrorMessage = retVal.Item3;
                     }
                     break;
-                case 1:
+                case StringValidationMessage.StringIsEmpty:
                     ErrorMessage = "* Search text should not be empty";
                     break;
-                case 2:
+                case StringValidationMessage.StringLengthGreaterThanLimit:
                     ErrorMessage = "* Search text should not have more than 50 characters (spaces not included)";
                     break;
-                case 3:
+                case StringValidationMessage.StringHasOnlyDigits:
                     ErrorMessage = "* Search text should be alphnumeric";
                     break;
-                case 4:
-                    ErrorMessage = "* Search text should be alphanumeric";
+                case StringValidationMessage.StringHasDigitsAndSpaces:
+                    ErrorMessage = "* Search text should be alphanumeric (numbers with spaces not allowed)";
                     break;
             }
             BookList = new ObservableCollection<Book>(result);
         }
+
 
         public void ClearSearch(string SearchString)
         {
