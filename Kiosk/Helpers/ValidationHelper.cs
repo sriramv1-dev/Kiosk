@@ -8,7 +8,7 @@ namespace Kiosk.Helpers
         public static StringValidationMessage ValidateSearchString(string inputString)
         {
 
-            if (string.IsNullOrEmpty(inputString))
+            if (string.IsNullOrEmpty(inputString.Trim()))
                 return StringValidationMessage.StringIsEmpty;
             if (inputString.Trim().Length > 50)
                 return StringValidationMessage.StringLengthGreaterThanLimit;
