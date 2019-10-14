@@ -210,47 +210,6 @@ namespace Kiosk.ViewModels
         }
 
 
-        //public async void GetBooks(string SearchString)
-        //{
-        //    int validated = ValidationHelper.ValidateSearchString(SearchText);
-        //    List<Book> result = new List<Book>();
-        //    switch (validated)
-        //    {
-        //        case 0:
-        //            ErrorMessage = "";
-        //            string searchByType = SearchByTitle ? "title" : SearchByAuthor ? "author" : "title";                    
-        //            var retVal = await BooksApi.Search(this.SearchText, searchByType);
-        //            bool ConnectionSuccesful = retVal.Item1;
-        //            result = retVal.Item2;
-        //            if (ConnectionSuccesful)
-        //            {                       
-        //                if (result.Count == 0)
-        //                {
-        //                    ErrorMessage = "Your search query resulted 0 records";
-        //                }
-        //            }
-        //            else
-        //            {
-        //                ErrorMessage = retVal.Item3;
-        //            }
-        //            break;
-        //        case 1:
-        //            ErrorMessage = "* Search text should not be empty";
-        //            break;
-        //        case 2:
-        //            ErrorMessage = "* Search text should not have more than 50 characters (spaces not included)";
-        //            break;
-        //        case 3:
-        //            ErrorMessage = "* Search text should be alphnumeric";
-        //            break;
-        //        case 4:
-        //            ErrorMessage = "* Search text should be alphanumeric";
-        //            break;
-        //    }
-        //    BookList = new ObservableCollection<Book>(result);
-        //}
-
-
         public async void GetBooks(string SearchString)
         {
             StringValidationMessage validated = ValidationHelper.ValidateSearchString(SearchText);
@@ -279,7 +238,7 @@ namespace Kiosk.ViewModels
                     ErrorMessage = "* Search text should not be empty";
                     break;
                 case StringValidationMessage.StringLengthGreaterThanLimit:
-                    ErrorMessage = "* Search text should not have more than 50 characters (spaces not included)";
+                    ErrorMessage = "* Search text should not be more than 50 characters (spaces not included)";
                     break;
                 case StringValidationMessage.StringHasOnlyDigits:
                     ErrorMessage = "* Search text should be alphnumeric";
